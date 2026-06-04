@@ -1,0 +1,2097 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MaIA — Agentes de IA para tu equipo | Sin código</title>
+  <meta name="description" content="Crea tu primer agente de IA en 30 minutos. Automatiza ventas, soporte y operaciones sin código. Prueba gratuita 14 días." />
+  <link rel="icon" type="image/svg+xml" href="docs/images/isotipo-maia.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Tokens ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Brand */
+      --orange:      #E8440A;
+      --orange-h:    #D03A08;   /* hover */
+      --orange-l:    #FF6B35;
+      --orange-xl:   #FFF0EB;   /* very light tint */
+      --orange-xxl:  #FFF8F5;   /* background tint */
+
+      /* Neutrals */
+      --bg:          #FFFFFF;
+      --bg-soft:     #FAFAF9;
+      --surface:     #FFFFFF;
+      --surface2:    #FFF5F1;
+      --border:      #F0EBE8;
+      --border2:     #E5DDD9;
+      --text:        #1A1410;
+      --text2:       #4A3F3A;
+      --muted:       #7A6E6A;
+      --muted2:      #A89E9A;
+
+      /* Status */
+      --green:       #16A34A;
+      --green-l:     #DCFCE7;
+      --amber:       #D97706;
+      --amber-l:     #FEF3C7;
+
+      --radius:      12px;
+      --radius-lg:   20px;
+      --shadow-sm:   0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md:   0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-lg:   0 12px 40px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.04);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Layout ─────────────────────────────────────── */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── Typography ─────────────────────────────────── */
+    h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; letter-spacing: -0.025em; color: var(--text); }
+    h1 { font-size: clamp(2.2rem, 5.5vw, 3.8rem); }
+    h2 { font-size: clamp(1.7rem, 3.5vw, 2.6rem); }
+    h3 { font-size: 1.15rem; font-weight: 600; }
+    p  { color: var(--muted); line-height: 1.75; }
+
+    .orange-text { color: var(--orange); }
+    .gradient-text {
+      background: linear-gradient(135deg, var(--orange) 0%, var(--orange-l) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--orange);
+      border: 1px solid rgba(232,68,10,0.2);
+      background: rgba(232,68,10,0.06);
+      padding: 4px 14px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+
+    .section-header { text-align: center; max-width: 680px; margin: 0 auto 64px; }
+    .section-header p { margin-top: 16px; font-size: 1.05rem; }
+
+    /* ── Buttons ─────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--orange);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--orange-h);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(232,68,10,0.35);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text2);
+      border: 1.5px solid var(--border2);
+    }
+    .btn-outline:hover {
+      border-color: var(--orange);
+      color: var(--orange);
+      background: rgba(232,68,10,0.04);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--orange);
+      padding: 0;
+      font-size: 14px;
+    }
+    .btn-ghost:hover { text-decoration: underline; }
+
+    .btn-lg { padding: 16px 36px; font-size: 16px; border-radius: 10px; }
+
+    /* ── Navbar ──────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    nav.scrolled { border-bottom-color: var(--border); box-shadow: var(--shadow-sm); }
+
+    .nav-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    /* Logo matching the app screenshots */
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .logo-maia {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .logo-m { color: var(--text); }
+    .logo-a1 { color: var(--text); }
+    .logo-i { color: var(--orange); }
+    .logo-a2 { color: var(--orange); }
+    .logo-sub {
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--muted2);
+      letter-spacing: 0.05em;
+      margin-left: 6px;
+      align-self: flex-end;
+      margin-bottom: 4px;
+      text-transform: lowercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text2);
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--orange); }
+
+    .nav-ctas { display: flex; align-items: center; gap: 10px; }
+    .nav-mobile-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+      padding: 6px;
+    }
+
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      .nav-mobile-btn { display: flex; }
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(255,255,255,0.98);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 20px; font-weight: 600; text-decoration: none; color: var(--text); }
+    .mobile-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: var(--text); font-size: 26px; cursor: pointer; }
+
+    /* ── Hero ────────────────────────────────────────── */
+    #hero {
+      padding: 140px 0 80px;
+      text-align: center;
+      background: linear-gradient(180deg, var(--orange-xxl) 0%, var(--bg) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 400px;
+      background: radial-gradient(ellipse, rgba(232,68,10,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--orange-xl);
+      border: 1px solid rgba(232,68,10,0.2);
+      padding: 6px 16px 6px 8px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--orange);
+      margin-bottom: 28px;
+    }
+    .hero-badge-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 3px var(--green-l);
+      animation: blink 2.5s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    .hero h1 { max-width: 800px; margin: 0 auto 22px; }
+    .hero-sub {
+      max-width: 540px;
+      margin: 0 auto 40px;
+      font-size: 1.1rem;
+      color: var(--text2);
+    }
+
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .hero-note { font-size: 13px; color: var(--muted2); }
+    .hero-note span { color: var(--green); font-weight: 600; }
+
+    /* Stats row */
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      margin-top: 64px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .stat-item {
+      flex: 1;
+      padding: 28px 16px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--orange);
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+    .stat-label { font-size: 13px; color: var(--muted); }
+
+    @media (max-width: 640px) {
+      .stats-row { flex-wrap: wrap; }
+      .stat-item { flex: 1 1 50%; border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-item:nth-child(odd) { border-right: 1px solid var(--border); }
+      .stat-item:last-child { border-bottom: none; }
+    }
+
+    /* Demo Window */
+    .demo-wrapper {
+      margin-top: 56px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .demo-bar {
+      height: 40px;
+      background: #F5F4F2;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 8px;
+    }
+    .demo-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .demo-dot-r { background: #FF5F56; }
+    .demo-dot-y { background: #FEBC2E; }
+    .demo-dot-g { background: #27C840; }
+    .demo-url {
+      flex: 1;
+      max-width: 320px;
+      margin: 0 auto;
+      height: 22px;
+      background: rgba(0,0,0,0.05);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .demo-screen { background: var(--bg-soft); }
+    .demo-app {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      min-height: 380px;
+    }
+    .demo-sidebar {
+      background: #FFFFFF;
+      border-right: 1px solid var(--border);
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .demo-sidebar-logo {
+      padding: 8px 8px 16px;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .demo-sidebar-logo .i { color: var(--orange); }
+    .demo-sidebar-logo .a { color: var(--orange); }
+    .demo-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: default;
+      transition: background 0.15s;
+    }
+    .demo-nav-item.active {
+      background: var(--orange-xl);
+      color: var(--orange);
+      font-weight: 600;
+    }
+    .demo-nav-icon { width: 16px; height: 16px; border-radius: 50%; background: currentColor; opacity: 0.3; }
+    .demo-nav-item.active .demo-nav-icon { opacity: 1; }
+    .demo-content { padding: 24px; }
+    .demo-content-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .demo-content-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+
+    .demo-agent-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      margin-bottom: 10px;
+      transition: border-color 0.15s;
+    }
+    .demo-agent-row:first-of-type { border-color: var(--orange); background: var(--orange-xxl); }
+    .demo-agent-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--orange-xl);
+      color: var(--orange);
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .demo-agent-info { flex: 1; }
+    .demo-agent-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .demo-agent-role { font-size: 12px; color: var(--muted); }
+    .demo-badge {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-weight: 600;
+    }
+    .badge-active { background: var(--green-l); color: var(--green); }
+    .badge-draft { background: var(--amber-l); color: var(--amber); }
+
+    .demo-actions {
+      display: flex;
+      gap: 8px;
+      margin-left: auto;
+    }
+    .demo-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text2);
+      cursor: default;
+    }
+    .demo-btn.primary { background: var(--orange); color: #fff; border-color: var(--orange); }
+
+    @media (max-width: 640px) {
+      .demo-app { grid-template-columns: 1fr; }
+      .demo-sidebar { display: none; }
+    }
+
+    /* ── Trust Bar ───────────────────────────────────── */
+    #trust {
+      padding: 48px 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-soft);
+    }
+    .trust-label { font-size: 13px; color: var(--muted2); margin-bottom: 24px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+    .logos-track {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .logo-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ── Sections generic ────────────────────────────── */
+    .section { padding: 88px 0; }
+    .section-alt { background: var(--bg-soft); }
+
+    /* ── Pain Section ────────────────────────────────── */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .pain-card {
+      padding: 28px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .pain-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .pain-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--orange), transparent);
+    }
+    .pain-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--orange-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      margin-bottom: 14px;
+    }
+    .pain-card h3 { font-size: 1rem; color: var(--text); margin-bottom: 8px; }
+    .pain-card p { font-size: 14px; }
+
+    /* ── Solution ────────────────────────────────────── */
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 860px) { .solution-grid { grid-template-columns: 1fr; } }
+
+    .solution-steps { display: flex; flex-direction: column; gap: 20px; }
+    .step {
+      display: flex;
+      gap: 18px;
+      padding: 22px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+    .step:hover { border-color: var(--orange); box-shadow: var(--shadow-md); }
+    .step-num {
+      width: 38px; height: 38px;
+      border-radius: 9px;
+      background: var(--orange);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .step h3 { color: var(--text); margin-bottom: 5px; font-size: 0.95rem; }
+    .step p { font-size: 14px; }
+
+    .solution-visual {
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+    .visual-header {
+      padding: 16px 20px;
+      background: var(--bg-soft);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .visual-header-title { font-size: 13px; font-weight: 600; color: var(--text2); }
+    .visual-body { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .visual-agent {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 15px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: all 0.15s;
+      cursor: default;
+    }
+    .visual-agent:hover, .visual-agent.active { border-color: var(--orange); background: var(--orange-xxl); }
+    .va-avatar {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: var(--orange-xl);
+      color: var(--orange);
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .va-info { flex: 1; }
+    .va-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .va-role { font-size: 12px; color: var(--muted); }
+    .visual-metrics {
+      margin-top: 8px;
+      padding: 16px;
+      border-radius: 9px;
+      background: var(--orange-xxl);
+      border: 1px solid rgba(232,68,10,0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .vm-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+    .vm-label { color: var(--muted); }
+    .vm-val { font-weight: 700; color: var(--text); }
+    .vm-val.good { color: var(--green); }
+    .vm-val.brand { color: var(--orange); }
+
+    /* ── Features ─────────────────────────────────────── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      padding: 30px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.22s;
+    }
+    .feature-card:hover { border-color: rgba(232,68,10,0.3); box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .feature-icon {
+      width: 46px; height: 46px;
+      border-radius: 11px;
+      background: var(--orange-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(232,68,10,0.15);
+    }
+    .feature-card h3 { color: var(--text); margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; }
+
+    /* ── Integrations ─────────────────────────────────── */
+    .int-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 10px;
+    }
+    .int-pill {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 11px 14px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text2);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s;
+    }
+    .int-pill:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-xxl); }
+    .int-icon { font-size: 17px; }
+
+    /* ── ROI Calculator ───────────────────────────────── */
+    .roi-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 860px) { .roi-box { grid-template-columns: 1fr; } }
+    .roi-left {
+      padding: 48px;
+      border-right: 1px solid var(--border);
+    }
+    @media (max-width: 860px) { .roi-left { border-right: none; border-bottom: 1px solid var(--border); padding: 32px 24px; } }
+    .roi-right {
+      padding: 48px;
+      background: var(--orange-xxl);
+    }
+    @media (max-width: 860px) { .roi-right { padding: 32px 24px; } }
+
+    .roi-left h3 { color: var(--text); margin-bottom: 6px; }
+    .roi-left > p { font-size: 14px; margin-bottom: 28px; }
+
+    .roi-inputs { display: flex; flex-direction: column; gap: 22px; }
+    .roi-field label { display: block; font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 10px; }
+    .roi-field input[type="range"] {
+      width: 100%; appearance: none; height: 4px;
+      border-radius: 2px; background: var(--border2); outline: none; cursor: pointer;
+    }
+    .roi-field input[type="range"]::-webkit-slider-thumb {
+      appearance: none; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--orange); cursor: pointer;
+      box-shadow: 0 0 0 4px rgba(232,68,10,0.15);
+    }
+    .roi-field-value { display: flex; justify-content: space-between; margin-top: 5px; font-size: 12px; color: var(--muted2); }
+    .roi-field-value strong { color: var(--orange); font-weight: 700; }
+
+    .roi-right h3 { color: var(--text); margin-bottom: 4px; }
+    .roi-result-label { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+    .roi-result-num {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: var(--orange);
+      line-height: 1;
+      margin-bottom: 6px;
+      letter-spacing: -0.03em;
+    }
+    .roi-result-sub { font-size: 14px; color: var(--text2); margin-bottom: 24px; }
+    .roi-breakdown { display: flex; flex-direction: column; gap: 0; margin: 20px 0; }
+    .roi-line {
+      display: flex; justify-content: space-between;
+      font-size: 13px; color: var(--muted);
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+    }
+    .roi-line strong { color: var(--text); }
+    .roi-line.total strong { color: var(--green); font-size: 15px; }
+
+    .roi-email-wrap { margin-top: 20px; display: flex; gap: 8px; }
+    .roi-email-input {
+      flex: 1; padding: 11px 16px;
+      border-radius: 8px; border: 1.5px solid var(--border2);
+      background: var(--surface); color: var(--text);
+      font-size: 14px; outline: none; font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .roi-email-input:focus { border-color: var(--orange); }
+    .roi-email-input::placeholder { color: var(--muted2); }
+
+    /* ── Pricing ──────────────────────────────────────── */
+    .pricing-toggle {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 44px;
+      font-size: 14px;
+      color: var(--text2);
+      font-weight: 500;
+    }
+    .toggle-track {
+      width: 46px; height: 25px;
+      border-radius: 13px;
+      background: var(--border2);
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .toggle-track.on { background: var(--orange); }
+    .toggle-track::after {
+      content: '';
+      position: absolute;
+      width: 19px; height: 19px;
+      border-radius: 50%;
+      background: #fff;
+      top: 3px; left: 3px;
+      transition: transform 0.2s;
+      box-shadow: var(--shadow-sm);
+    }
+    .toggle-track.on::after { transform: translateX(21px); }
+    .toggle-badge {
+      background: var(--green-l); color: var(--green);
+      padding: 2px 8px; border-radius: 100px;
+      font-size: 11px; font-weight: 700;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      align-items: start;
+    }
+
+    .pricing-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      padding: 28px;
+      position: relative;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.22s;
+    }
+    .pricing-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .pricing-card.featured {
+      border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(232,68,10,0.1), var(--shadow-md);
+      transform: scale(1.02);
+    }
+    .pricing-card.featured:hover { transform: scale(1.02) translateY(-3px); }
+    .featured-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--orange); color: #fff;
+      font-size: 11px; font-weight: 700;
+      padding: 4px 14px; border-radius: 100px;
+      letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap;
+    }
+
+    .plan-name { font-size: 12px; font-weight: 700; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+    .plan-price {
+      font-size: 2.6rem; font-weight: 800; letter-spacing: -0.03em;
+      line-height: 1; color: var(--text); margin-bottom: 4px;
+    }
+    .plan-price sup { font-size: 1.1rem; font-weight: 600; vertical-align: top; margin-top: 8px; color: var(--text); }
+    .plan-period { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+    .plan-saving { font-size: 12px; color: var(--green); font-weight: 600; height: 18px; margin-bottom: 18px; }
+    .plan-divider { height: 1px; background: var(--border); margin: 18px 0; }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 9px; margin-bottom: 24px; }
+    .plan-features li {
+      display: flex; align-items: flex-start; gap: 9px;
+      font-size: 14px; color: var(--text2);
+    }
+    .plan-features li::before { content: '✓'; color: var(--orange); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .plan-features li.dim::before { content: '—'; color: var(--muted2); }
+    .plan-features li.dim { color: var(--muted2); }
+
+    /* ── Testimonials ─────────────────────────────────── */
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .testi-card {
+      padding: 30px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      display: flex; flex-direction: column; gap: 18px;
+      transition: all 0.22s;
+    }
+    .testi-card:hover { border-color: rgba(232,68,10,0.25); box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .testi-stars { color: var(--orange); letter-spacing: 2px; font-size: 15px; }
+    .testi-quote { font-size: 15px; color: var(--text2); line-height: 1.75; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 12px; margin-top: auto; }
+    .testi-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--orange-xl);
+      color: var(--orange);
+      font-weight: 700; font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid rgba(232,68,10,0.15);
+    }
+    .testi-name { font-size: 14px; font-weight: 700; color: var(--text); }
+    .testi-role { font-size: 12px; color: var(--muted); }
+    .testi-result {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 100px;
+      background: var(--green-l); font-size: 12px; font-weight: 700; color: var(--green);
+    }
+
+    /* ── FAQ ──────────────────────────────────────────── */
+    .faq-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+    .faq-item {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .faq-item.open { border-color: rgba(232,68,10,0.25); }
+    .faq-q {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 22px; cursor: pointer;
+      font-size: 15px; font-weight: 600; color: var(--text); gap: 14px;
+    }
+    .faq-q:hover { color: var(--orange); }
+    .faq-icon {
+      width: 24px; height: 24px; border-radius: 50%;
+      border: 1.5px solid var(--border2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0; color: var(--muted);
+      transition: all 0.2s;
+    }
+    .faq-item.open .faq-icon {
+      background: var(--orange-xl); border-color: var(--orange);
+      color: var(--orange); transform: rotate(45deg);
+    }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s ease;
+      font-size: 14px; color: var(--muted); line-height: 1.75;
+    }
+    .faq-item.open .faq-a { max-height: 300px; padding: 0 22px 18px; }
+
+    /* ── CTA Final ────────────────────────────────────── */
+    .cta-box {
+      border-radius: var(--radius-lg);
+      background: var(--orange);
+      padding: 72px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 400px; height: 400px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 50%;
+    }
+    .cta-box::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -80px;
+      width: 300px; height: 300px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+    .cta-box h2 { color: #fff; margin-bottom: 16px; }
+    .cta-box p { color: rgba(255,255,255,0.85); max-width: 480px; margin: 0 auto 36px; font-size: 1.1rem; }
+    .cta-form {
+      display: flex; gap: 10px; max-width: 480px; margin: 0 auto 14px;
+      flex-wrap: wrap; justify-content: center; position: relative; z-index: 1;
+    }
+    .cta-input {
+      flex: 1; min-width: 200px;
+      padding: 14px 20px; border-radius: 8px;
+      border: none;
+      background: rgba(255,255,255,0.2);
+      color: #fff; font-size: 15px; outline: none;
+      font-family: inherit;
+      backdrop-filter: blur(10px);
+      transition: background 0.2s;
+    }
+    .cta-input:focus { background: rgba(255,255,255,0.28); }
+    .cta-input::placeholder { color: rgba(255,255,255,0.65); }
+    .btn-cta-final {
+      background: #fff; color: var(--orange);
+      padding: 14px 28px; border-radius: 8px;
+      font-weight: 700; font-size: 15px;
+      border: none; cursor: pointer; font-family: inherit;
+      transition: all 0.18s; white-space: nowrap;
+    }
+    .btn-cta-final:hover { background: rgba(255,255,255,0.92); transform: translateY(-1px); }
+    .cta-disclaimer { font-size: 13px; color: rgba(255,255,255,0.65); position: relative; z-index: 1; }
+    .cta-or { color: rgba(255,255,255,0.6); font-size: 14px; margin: 18px 0 14px; position: relative; z-index: 1; }
+    .cta-demo-link {
+      color: rgba(255,255,255,0.9); font-weight: 600;
+      cursor: pointer; text-decoration: none; font-size: 15px;
+      position: relative; z-index: 1;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+      padding-bottom: 2px;
+    }
+    .cta-demo-link:hover { color: #fff; border-bottom-color: rgba(255,255,255,0.8); }
+
+    /* ── Footer ──────────────────────────────────────── */
+    footer {
+      padding: 56px 0 32px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-soft);
+    }
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+    }
+    @media (max-width: 860px) { .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; } }
+    @media (max-width: 500px) { .footer-inner { grid-template-columns: 1fr; } }
+
+    .footer-brand p { font-size: 14px; margin-top: 14px; max-width: 260px; }
+    .footer-col h4 {
+      font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 14px;
+      letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+    .footer-col ul a { text-decoration: none; font-size: 14px; color: var(--muted); transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--orange); }
+
+    .footer-bottom {
+      margin-top: 48px; padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 12px;
+      font-size: 13px; color: var(--muted2);
+    }
+    .footer-socials { display: flex; gap: 8px; }
+    .footer-social {
+      width: 32px; height: 32px; border-radius: 7px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; text-decoration: none; color: var(--muted);
+      background: var(--surface);
+      transition: all 0.2s;
+    }
+    .footer-social:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-xxl); }
+
+    /* ── WhatsApp Float ──────────────────────────────── */
+    .wa-float {
+      position: fixed; bottom: 24px; right: 24px; z-index: 50;
+      width: 54px; height: 54px; border-radius: 50%;
+      background: #25D366;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.4);
+      text-decoration: none; transition: all 0.2s;
+    }
+    .wa-float:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(37,211,102,0.5); }
+    .wa-float svg { width: 27px; height: 27px; fill: #fff; }
+
+    /* ── Reveal animations ───────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .fade-up { animation: fadeUp 0.6s ease both; }
+    .fade-up-1 { animation-delay: 0.1s; }
+    .fade-up-2 { animation-delay: 0.2s; }
+    .fade-up-3 { animation-delay: 0.3s; }
+    .fade-up-4 { animation-delay: 0.4s; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ── Contact Modal ───────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(20, 14, 10, 0.55);
+      backdrop-filter: blur(4px);
+      display: none; align-items: center; justify-content: center;
+      padding: 24px; opacity: 0; transition: opacity 0.25s ease;
+    }
+    .modal-overlay.open { display: flex; opacity: 1; }
+    .modal {
+      background: var(--surface); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg); width: 100%; max-width: 520px;
+      max-height: calc(100vh - 48px); overflow-y: auto;
+      transform: translateY(12px); transition: transform 0.25s ease;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-header {
+      padding: 28px 28px 8px; position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 18px; right: 18px;
+      width: 32px; height: 32px; border-radius: 50%;
+      border: none; background: var(--bg-soft); color: var(--text2);
+      font-size: 18px; cursor: pointer; line-height: 1;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+    }
+    .modal-close:hover { background: var(--border); }
+    .modal-header h3 {
+      font-size: 1.5rem; font-weight: 700; color: var(--text);
+      margin-bottom: 6px; letter-spacing: -0.02em;
+    }
+    .modal-header p { font-size: 14px; color: var(--muted); }
+    .modal-body { padding: 18px 28px 28px; }
+    .form-row { margin-bottom: 14px; }
+    .form-row.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-label {
+      display: block; font-size: 12px; font-weight: 600;
+      color: var(--text2); margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+    .form-label .req { color: var(--orange); }
+    .form-input, .form-textarea {
+      width: 100%; padding: 11px 14px;
+      font-family: inherit; font-size: 14px; color: var(--text);
+      background: var(--bg); border: 1px solid var(--border2);
+      border-radius: var(--radius); transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .form-input:focus, .form-textarea:focus {
+      outline: none; border-color: var(--orange);
+      box-shadow: 0 0 0 3px rgba(232,68,10,0.12);
+    }
+    .form-input.invalid, .form-textarea.invalid {
+      border-color: #DC2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.10);
+    }
+    .form-textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+    .form-submit {
+      width: 100%; margin-top: 6px; padding: 13px 18px;
+      font-size: 15px; font-weight: 600;
+    }
+    .form-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+    .form-status {
+      margin-top: 14px; padding: 12px 14px;
+      border-radius: var(--radius); font-size: 13px;
+      display: none;
+    }
+    .form-status.show { display: block; }
+    .form-status.success {
+      background: var(--green-l); color: #14532D;
+      border: 1px solid rgba(22,163,74,0.25);
+    }
+    .form-status.error {
+      background: #FEE2E2; color: #991B1B;
+      border: 1px solid rgba(220,38,38,0.25);
+    }
+    .form-note {
+      margin-top: 12px; font-size: 12px; color: var(--muted); text-align: center;
+    }
+    @media (max-width: 640px) {
+      .modal-header { padding: 22px 20px 6px; }
+      .modal-body { padding: 14px 20px 24px; }
+      .form-row.two-col { grid-template-columns: 1fr; }
+    }
+
+    /* ── Mobile ──────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .section { padding: 56px 0; }
+      #hero { padding: 110px 0 56px; }
+      .cta-box { padding: 44px 24px; }
+      .roi-box { }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navbar ─────────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <img src="docs/images/logo-maia.svg" alt="MaIA" style="height:32px;display:block;" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#solution">Cómo funciona</a></li>
+      <li><a href="#features">Funciones</a></li>
+      <li><a href="#integrations">Integraciones</a></li>
+      <li><a href="#pricing">Precios</a></li>
+      <li><a href="#testimonials">Casos de éxito</a></li>
+    </ul>
+    <div class="nav-ctas">
+      <a href="#pricing" class="btn btn-outline" style="padding:9px 18px;font-size:14px;">Ver precios</a>
+      <button type="button" class="btn btn-primary" style="padding:9px 18px;font-size:14px;" onclick="openContactModal('demo')">Agenda un demo</button>
+    </div>
+    <button class="nav-mobile-btn" onclick="openMenu()" aria-label="Menú">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="19" y2="6"/><line x1="3" y1="11" x2="19" y2="11"/><line x1="3" y1="16" x2="19" y2="16"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="closeMenu()">✕</button>
+  <a href="#solution" onclick="closeMenu()">Cómo funciona</a>
+  <a href="#features" onclick="closeMenu()">Funciones</a>
+  <a href="#integrations" onclick="closeMenu()">Integraciones</a>
+  <a href="#pricing" onclick="closeMenu()">Precios</a>
+  <a href="#testimonials" onclick="closeMenu()">Casos de éxito</a>
+  <button type="button" class="btn btn-primary" onclick="closeMenu(); openContactModal('demo');" style="margin-top:8px;">Agenda un demo →</button>
+</div>
+
+<!-- ── Hero ──────────────────────────────────────────── -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-badge fade-up">
+      <span class="hero-badge-dot"></span>
+      Nuevo: Multi-agente con memoria persistente
+    </div>
+    <h1 class="fade-up fade-up-1">
+      Crea agentes de IA que<br/>
+      <span class="gradient-text">trabajan por tu equipo</span><br/>
+      24/7, sin código
+    </h1>
+    <p class="hero-sub fade-up fade-up-2">
+      Automatiza ventas, soporte y operaciones internas en 30 minutos.
+      Sin ingenieros. Con todas tus integraciones ya conectadas.
+    </p>
+    <div class="hero-ctas fade-up fade-up-3">
+      <button type="button" class="btn btn-primary btn-lg" onclick="openContactModal('demo')">
+        Agenda un demo →
+      </button>
+      <a href="https://www.youtube.com/watch?v=EngW7tLk6R8" target="_blank" class="btn btn-outline btn-lg">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="8" cy="8" r="7"/><polyline points="8 4 8 8 11 10"/>
+        </svg>
+        Ver demo en vivo
+      </a>
+    </div>
+    <p class="hero-note fade-up fade-up-4">
+      <span>✓</span> Sin tarjeta de crédito &nbsp;·&nbsp;
+      <span>✓</span> Setup en 30 minutos &nbsp;·&nbsp;
+      <span>✓</span> Cancela cuando quieras
+    </p>
+
+    <!-- Stats Row -->
+    <div class="stats-row reveal">
+      <div class="stat-item">
+        <div class="stat-num" id="stat-teams">+500</div>
+        <div class="stat-label">Equipos activos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="stat-int">4.2M</div>
+        <div class="stat-label">Interacciones / mes</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="stat-red">68%</div>
+        <div class="stat-label">Reducción tareas manuales</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="stat-roi">3.1×</div>
+        <div class="stat-label">ROI promedio</div>
+      </div>
+    </div>
+
+    <!-- Demo Window – mimics actual MaIA app UI -->
+    <div class="demo-wrapper reveal">
+      <div class="demo-bar">
+        <div class="demo-dot demo-dot-r"></div>
+        <div class="demo-dot demo-dot-y"></div>
+        <div class="demo-dot demo-dot-g"></div>
+        <div class="demo-url">app.maiabuilder.ai / mis-agentes</div>
+      </div>
+      <div class="demo-screen">
+        <div class="demo-app">
+          <div class="demo-sidebar">
+            <div class="demo-sidebar-logo"><img src="docs/images/logo-maia.svg" alt="MaIA" style="height:22px;display:block;" /></div>
+            <div class="demo-nav-item active">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><circle cx="7" cy="7" r="7"/></svg>
+              Mis Agentes
+            </div>
+            <div class="demo-nav-item">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" opacity="0.4"><circle cx="7" cy="7" r="7"/></svg>
+              Conversaciones
+            </div>
+            <div class="demo-nav-item" style="margin-top:8px;">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" opacity="0.4"><circle cx="7" cy="7" r="7"/></svg>
+              Mi cuenta
+            </div>
+            <div class="demo-nav-item">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" opacity="0.4"><circle cx="7" cy="7" r="7"/></svg>
+              Insights & KPIs
+            </div>
+            <div class="demo-nav-item">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" opacity="0.4"><circle cx="7" cy="7" r="7"/></svg>
+              Centro de Ayuda
+            </div>
+          </div>
+          <div class="demo-content">
+            <div class="demo-content-title">Mis agentes IA</div>
+            <div class="demo-content-sub">Administra todos tus agentes en un solo lugar.</div>
+            <div class="demo-agent-row">
+              <div class="demo-agent-avatar">C</div>
+              <div class="demo-agent-info">
+                <div class="demo-agent-name">Clara</div>
+                <div class="demo-agent-role">Agente de Ventas Nivel 1 · 8 conversaciones</div>
+              </div>
+              <span class="demo-badge badge-active">Activo</span>
+              <div class="demo-actions">
+                <div class="demo-btn">✏️ Editar</div>
+                <div class="demo-btn">▶ Probar</div>
+              </div>
+            </div>
+            <div class="demo-agent-row">
+              <div class="demo-agent-avatar">L</div>
+              <div class="demo-agent-info">
+                <div class="demo-agent-name">Lucio</div>
+                <div class="demo-agent-role">Asesor de piso para vendedores · 9 conversaciones</div>
+              </div>
+              <span class="demo-badge badge-active">Activo</span>
+              <div class="demo-actions">
+                <div class="demo-btn">✏️ Editar</div>
+                <div class="demo-btn">▶ Probar</div>
+              </div>
+            </div>
+            <div class="demo-agent-row">
+              <div class="demo-agent-avatar">S</div>
+              <div class="demo-agent-info">
+                <div class="demo-agent-name">Soporte 24/7</div>
+                <div class="demo-agent-role">Atención al cliente · 120 conversaciones</div>
+              </div>
+              <span class="demo-badge badge-draft">Borrador</span>
+              <div class="demo-actions">
+                <div class="demo-btn">✏️ Editar</div>
+                <div class="demo-btn primary">▶ Probar</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Trust Bar ─────────────────────────────────────── -->
+<section id="trust">
+  <div class="container">
+    <p class="trust-label">Empresas líderes en Latinoamérica confían en MaIA</p>
+    <div class="logos-track">
+      <div class="logo-pill">🏦 Banca Regional</div>
+      <div class="logo-pill">🏥 CliniGroup</div>
+      <div class="logo-pill">🛍️ Led Studio</div>
+      <div class="logo-pill">📦 LogiMax</div>
+      <div class="logo-pill">🎓 EduTech LATAM</div>
+      <div class="logo-pill">🔒 SecureFinance</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Pain Section ──────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="label">El problema real</div>
+      <h2>Tu equipo pierde horas cada día en tareas que la IA puede resolver</h2>
+      <p>Mientras tus competidores automatizan, tú sigues pagando por trabajo manual que un agente puede hacer mejor, más rápido y sin errores.</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card reveal">
+        <div class="pain-icon">💸</div>
+        <h3>Costo invisible de la repetición</h3>
+        <p>Un agente de soporte gasta 65% de su tiempo respondiendo las mismas 20 preguntas. Dinero y talento desperdiciado.</p>
+      </div>
+      <div class="pain-card reveal">
+        <div class="pain-icon">🌙</div>
+        <h3>Clientes sin respuesta fuera de horario</h3>
+        <p>El 73% de los clientes espera respuesta inmediata. Sin cobertura 24/7 pierdes ventas mientras tu equipo duerme.</p>
+      </div>
+      <div class="pain-card reveal">
+        <div class="pain-icon">🔗</div>
+        <h3>Datos dispersos en múltiples sistemas</h3>
+        <p>Salesforce, SAP, WhatsApp, email — nadie tiene visibilidad completa y las integraciones son costosas.</p>
+      </div>
+      <div class="pain-card reveal">
+        <div class="pain-icon">📉</div>
+        <h3>Escalar significa contratar más</h3>
+        <p>Cada pico de demanda requiere más personal. El modelo lineal destruye tus márgenes y frena tu crecimiento.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Solution ──────────────────────────────────────── -->
+<section id="solution" class="section section-alt">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="label">Cómo funciona</div>
+      <h2>Tu primer agente activo en 30 minutos, sin código</h2>
+      <p>MaIA conecta con tus sistemas, aprende de tu empresa y empieza a trabajar — sin intervención del equipo técnico.</p>
+    </div>
+    <div class="solution-grid">
+      <div class="solution-steps">
+        <div class="step reveal">
+          <div class="step-num">1</div>
+          <div>
+            <h3>Personaliza tu agente IA</h3>
+            <p>Define nombre, tipo, tono de voz y personalidad. El modelo de IA se adapta a tu marca desde el primer minuto.</p>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">2</div>
+          <div>
+            <h3>Entrénalo con tu conocimiento</h3>
+            <p>Sube manuales, conecta tu CRM, base de datos o sitio web. MaIA aprende todo sobre tu empresa automáticamente.</p>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">3</div>
+          <div>
+            <h3>Despliega en tus canales</h3>
+            <p>Activa en WhatsApp, web, Slack o Salesforce en un clic. Monitorea conversaciones y KPIs en tiempo real.</p>
+          </div>
+        </div>
+      </div>
+      <div class="solution-visual reveal">
+        <div class="visual-header">
+          <span class="visual-header-title">Mis Agentes IA</span>
+          <span class="demo-badge badge-active">3 activos</span>
+        </div>
+        <div class="visual-body">
+          <div class="visual-agent active">
+            <div class="va-avatar">C</div>
+            <div class="va-info">
+              <div class="va-name">Clara</div>
+              <div class="va-role">Agente de Ventas Nivel 1</div>
+            </div>
+            <span class="demo-badge badge-active">Activo</span>
+          </div>
+          <div class="visual-agent">
+            <div class="va-avatar">L</div>
+            <div class="va-info">
+              <div class="va-name">Lucio</div>
+              <div class="va-role">Asesor de piso</div>
+            </div>
+            <span class="demo-badge badge-active">Activo</span>
+          </div>
+          <div class="visual-agent">
+            <div class="va-avatar">S</div>
+            <div class="va-info">
+              <div class="va-name">Soporte 24/7</div>
+              <div class="va-role">Atención al cliente</div>
+            </div>
+            <span class="demo-badge badge-draft">Borrador</span>
+          </div>
+          <div class="visual-metrics">
+            <div class="vm-row">
+              <span class="vm-label">Interacciones hoy</span>
+              <span class="vm-val brand">2,341</span>
+            </div>
+            <div class="vm-row">
+              <span class="vm-label">Resueltos sin humano</span>
+              <span class="vm-val good">94.2%</span>
+            </div>
+            <div class="vm-row">
+              <span class="vm-label">Tiempo respuesta</span>
+              <span class="vm-val brand">1.8 seg</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Features ──────────────────────────────────────── -->
+<section id="features" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="label">Funciones</div>
+      <h2>Todo lo que necesitas para automatizar sin fricciones</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">🧠</div>
+        <h3>IA con memoria persistente</h3>
+        <p>Tus agentes recuerdan el contexto entre conversaciones. Cada cliente es tratado como si el agente lo conociera de siempre.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">📊</div>
+        <h3>Insights & KPIs en tiempo real</h3>
+        <p>Monitorea resoluciones, CSAT, tiempos y conversiones en vivo. Alertas automáticas cuando algo se desvía.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🔐</div>
+        <h3>Seguridad empresarial</h3>
+        <p>Cifrado en reposo y tránsito, roles y permisos granulares. Tus datos nunca se usan para entrenar modelos externos.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🌐</div>
+        <h3>Multi-idioma nativo</h3>
+        <p>Español, inglés, portugués y 40+ idiomas. Un solo agente atiende a todos tus mercados automáticamente.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🤝</div>
+        <h3>Escalación inteligente a humanos</h3>
+        <p>Cuando la IA detecta frustración o complejidad, transfiere la conversación con todo el contexto al agente correcto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Integrations ───────────────────────────────────── -->
+<section id="integrations" class="section section-alt">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="label">Integraciones</div>
+      <h2>Conecta con las herramientas que ya usas hoy</h2>
+      <p>Más de 50 integraciones nativas. Sin APIs complicadas, sin costos de implementación adicionales.</p>
+    </div>
+    <div class="int-grid reveal">
+      <div class="int-pill"><span class="int-icon">☁️</span> Salesforce</div>
+      <div class="int-pill"><span class="int-icon">🟠</span> HubSpot</div>
+      <div class="int-pill"><span class="int-icon">🔵</span> SAP</div>
+      <div class="int-pill"><span class="int-icon">💬</span> WhatsApp</div>
+      <div class="int-pill"><span class="int-icon">💼</span> Slack</div>
+      <div class="int-pill"><span class="int-icon">📧</span> Gmail</div>
+      <div class="int-pill"><span class="int-icon">🟣</span> Zendesk</div>
+      <div class="int-pill"><span class="int-icon">📋</span> Notion</div>
+      <div class="int-pill"><span class="int-icon">🟦</span> MS Teams</div>
+      <div class="int-pill"><span class="int-icon">📊</span> Tableau</div>
+      <div class="int-pill"><span class="int-icon">🛒</span> Shopify</div>
+      <div class="int-pill"><span class="int-icon">📦</span> VTEX</div>
+      <div class="int-pill"><span class="int-icon">🔗</span> Zapier</div>
+      <div class="int-pill"><span class="int-icon">⚙️</span> API REST</div>
+      <div class="int-pill"><span class="int-icon">🎯</span> Intercom</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ROI Calculator ────────────────────────────────── -->
+<section id="roi" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="label">Calculadora de ROI</div>
+      <h2>¿Cuánto puedes ahorrar con MaIA?</h2>
+    </div>
+    <div class="roi-box reveal">
+      <div class="roi-left">
+        <h3>Tu situación actual</h3>
+        <p>Ajusta los valores para calcular tu ahorro potencial.</p>
+        <div class="roi-inputs">
+          <div class="roi-field">
+            <label>Agentes de soporte / ventas en tu equipo</label>
+            <input type="range" id="agents" min="2" max="100" value="15" oninput="calcROI()">
+            <div class="roi-field-value"><span>2</span><strong id="agents-val">15 agentes</strong><span>100</span></div>
+          </div>
+          <div class="roi-field">
+            <label>Salario mensual promedio por agente (USD)</label>
+            <input type="range" id="salary" min="500" max="5000" step="100" value="1200" oninput="calcROI()">
+            <div class="roi-field-value"><span>$500</span><strong id="salary-val">$1,200</strong><span>$5,000</span></div>
+          </div>
+          <div class="roi-field">
+            <label>% del tiempo en tareas repetitivas</label>
+            <input type="range" id="repetitive" min="20" max="80" value="60" oninput="calcROI()">
+            <div class="roi-field-value"><span>20%</span><strong id="rep-val">60%</strong><span>80%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="roi-right">
+        <h3>Tu ahorro estimado</h3>
+        <div class="roi-result-label">Ahorro mensual</div>
+        <div class="roi-result-num" id="roi-num">$10,800</div>
+        <div class="roi-result-sub" id="roi-sub">$129,600 al año — ROI 3.1×</div>
+        <div class="roi-breakdown">
+          <div class="roi-line">
+            <span>Costo actual (tareas manuales)</span>
+            <strong id="roi-cost">$10,800/mo</strong>
+          </div>
+          <div class="roi-line">
+            <span>Inversión en MaIA</span>
+            <strong id="roi-plan">$559/mo</strong>
+          </div>
+          <div class="roi-line total">
+            <span>Ahorro neto</span>
+            <strong id="roi-net">$10,241/mo</strong>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-top:16px;margin-bottom:6px;">Recibe el análisis detallado en tu email</p>
+        <div class="roi-email-wrap">
+          <input class="roi-email-input" type="email" placeholder="tu@empresa.com" id="roi-email" />
+          <button class="btn btn-primary" style="border-radius:8px;padding:11px 18px;" onclick="sendROI()">Enviar →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Pricing ───────────────────────────────────────── -->
+<section id="pricing" class="section section-alt">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="label">Precios</div>
+      <h2>Transparente. Sin sorpresas.</h2>
+      <p>Empieza gratis y escala cuando lo necesites. Todos los planes incluyen soporte en español y onboarding guiado.</p>
+    </div>
+
+    <div class="pricing-toggle reveal">
+      <span style="color:var(--muted)">Mensual</span>
+      <div class="toggle-track on" id="billingToggle" onclick="toggleBilling()"></div>
+      <span>Anual</span>
+      <span class="toggle-badge">Ahorra 20%</span>
+    </div>
+
+    <div class="pricing-grid reveal">
+      <!-- Starter -->
+      <div class="pricing-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price"><sup>$</sup><span class="price-num" data-monthly="299" data-annual="239">239</span></div>
+        <div class="plan-period">/ mes · 2,500 interacciones</div>
+        <div class="plan-saving" id="save-starter">Ahorras $720/año</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li>1 agente activo</li>
+          <li>2,500 interacciones/mes</li>
+          <li>100 MB knowledge base</li>
+          <li>WhatsApp + Web chat</li>
+          <li>Soporte por email</li>
+          <li class="dim">Workflows avanzados</li>
+          <li class="dim">Dashboard KPIs</li>
+          <li class="dim">SSO / SAML</li>
+        </ul>
+      </div>
+
+      <!-- Team (featured) -->
+      <div class="pricing-card featured">
+        <div class="featured-badge">Más popular</div>
+        <div class="plan-name">Team</div>
+        <div class="plan-price"><sup>$</sup><span class="price-num" data-monthly="699" data-annual="559">559</span></div>
+        <div class="plan-period">/ mes · 3,000 interacciones</div>
+        <div class="plan-saving" id="save-team">Ahorras $1,680/año</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li>5 agentes activos</li>
+          <li>3,000 interacciones/mes</li>
+          <li>1 GB knowledge base</li>
+          <li>Todos los canales</li>
+          <li>3 workflows avanzados</li>
+          <li>Dashboard de KPIs</li>
+          <li>Centro de monitoreo</li>
+          <li class="dim">SSO / SAML</li>
+        </ul>
+      </div>
+
+      <!-- Growth -->
+      <div class="pricing-card">
+        <div class="plan-name">Growth</div>
+        <div class="plan-price"><sup>$</sup><span class="price-num" data-monthly="1499" data-annual="1199">1,199</span></div>
+        <div class="plan-period">/ mes · 4,000 interacciones</div>
+        <div class="plan-saving" id="save-growth">Ahorras $3,600/año</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li>Agentes ilimitados</li>
+          <li>4,000 interacciones/mes</li>
+          <li>5 GB knowledge base</li>
+          <li>Todos los canales</li>
+          <li>Workflows ilimitados</li>
+          <li>KPIs avanzados + alertas</li>
+          <li>Multi-agente coordinado</li>
+          <li>SSO / SAML</li>
+        </ul>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="pricing-card">
+        <div class="plan-name">Enterprise</div>
+        <div class="plan-price" style="font-size:1.8rem;letter-spacing:-0.02em;">A medida</div>
+        <div class="plan-period">Volumen y SLA personalizados</div>
+        <div class="plan-saving">&nbsp;</div>
+        <a href="https://wa.me/message/maiabuilder" target="_blank" class="btn btn-outline" style="width:100%;">Hablar con ventas</a>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li>Interacciones ilimitadas</li>
+          <li>Usuarios ilimitados</li>
+          <li>Integraciones custom</li>
+          <li>Multi-agente avanzado</li>
+          <li>Deployment on-premise</li>
+          <li>SLA de uptime garantizado</li>
+          <li>Customer success dedicado</li>
+          <li>Contrato flexible</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="reveal" style="text-align:center;margin-top:28px;font-size:14px;color:var(--muted2);">
+      ¿No sabes cuál elegir? <a href="#" onclick="event.preventDefault(); openContactModal('demo');" style="color:var(--orange);font-weight:600;">Agenda una demo gratuita de 30 min</a> y te ayudamos.
+    </p>
+  </div>
+</section>
+
+<!-- ── Testimonials ──────────────────────────────────── -->
+<section id="testimonials" class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="label">Casos de éxito</div>
+      <h2>Resultados reales de equipos reales</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"En 3 semanas automatizamos el 87% de las consultas de soporte. Pasamos de 8 agentes a tener solo 2 manejando casos complejos. El resto del equipo ahora vende."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">C</div>
+          <div>
+            <div class="testi-name">Carlos Mendoza</div>
+            <div class="testi-role">Director de Operaciones · Retail LATAM</div>
+          </div>
+        </div>
+        <div class="testi-result">↑ 87% resolución autónoma</div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"Implementamos MaIA para onboarding de empleados. Lo que tardaba 2 semanas con RRHH ahora el agente lo resuelve en 2 días. La experiencia mejoró radicalmente."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">A</div>
+          <div>
+            <div class="testi-name">Andrea Lozano</div>
+            <div class="testi-role">VP de RRHH · FinTech Regional</div>
+          </div>
+        </div>
+        <div class="testi-result">↓ 75% tiempo de onboarding</div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"El agente de ventas califica leads 24/7 y agenda demos directo al calendario. En 60 días aumentamos el pipeline calificado en 3.2 veces sin contratar a nadie."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">R</div>
+          <div>
+            <div class="testi-name">Roberto Salinas</div>
+            <div class="testi-role">CEO · SaaS B2B Mexico</div>
+          </div>
+        </div>
+        <div class="testi-result">↑ 3.2× pipeline en 60 días</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ───────────────────────────────────────────── -->
+<section id="faq" class="section section-alt">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="label">Preguntas frecuentes</div>
+      <h2>Todo lo que necesitas saber</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">¿Necesito saber programar para usar MaIA? <div class="faq-icon">+</div></div>
+        <div class="faq-a">No. MaIA fue diseñado para equipos no técnicos. El editor de agentes es visual y la configuración de integraciones se hace con clics. Si puedes usar Gmail, puedes usar MaIA.</div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">¿Cuánto tiempo tarda la implementación? <div class="faq-icon">+</div></div>
+        <div class="faq-a">La mayoría de clientes tienen su primer agente activo en menos de 30 minutos. Las integraciones con CRMs como Salesforce o HubSpot toman entre 1 y 4 horas. Para Enterprise con integraciones custom el tiempo varía.</div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">¿Mis datos se usan para entrenar la IA? <div class="faq-icon">+</div></div>
+        <div class="faq-a">Nunca. Tus datos son exclusivamente tuyos. MaIA usa modelos de IA bajo contratos que prohíben usar tus datos para entrenamiento. Además, toda la información está cifrada en reposo y en tránsito.</div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">¿Qué pasa cuando el agente no puede resolver algo? <div class="faq-icon">+</div></div>
+        <div class="faq-a">MaIA detecta automáticamente cuando una conversación supera su capacidad o cuando el usuario expresa frustración, y transfiere al agente humano correcto con todo el historial de la conversación.</div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">¿Puedo cancelar cuando quiera? <div class="faq-icon">+</div></div>
+        <div class="faq-a">Sí. En planes mensuales cancelas en cualquier momento. En planes anuales tienes garantía de satisfacción de 30 días con reembolso completo. No hay contratos de permanencia en planes Starter, Team y Growth.</div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">¿Tienen soporte en español? <div class="faq-icon">+</div></div>
+        <div class="faq-a">Sí, todo nuestro soporte es en español. Acceso a chat en vivo (planes Team y Growth), email support 24h, documentación completa en español y onboarding guiado con un especialista de nuestro equipo.</div>
+      </div>
+      <div class="faq-item reveal" onclick="toggleFaq(this)">
+        <div class="faq-q">¿Qué modelos de IA usa MaIA? <div class="faq-icon">+</div></div>
+        <div class="faq-a">MaIA es modelo-agnóstico. Por defecto usa GPT-4 y Claude, optimizando automáticamente costo y rendimiento. En Enterprise puedes traer tu propia API key o modelos privados on-premise.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA Final ──────────────────────────────────────── -->
+<section id="cta-final" class="section">
+  <div class="container">
+    <div class="cta-box reveal">
+      <div class="label" style="background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.3);color:#fff;margin:0 auto 20px;">Sin riesgos</div>
+      <h2>Empieza hoy.<br/>Tu equipo lo agradecerá.</h2>
+      <p>Sin tarjeta de crédito. Setup en 30 minutos. Tu primer agente activo desde el día uno.</p>
+      <div class="cta-form">
+        <input class="cta-input" type="email" placeholder="tu@empresa.com" id="cta-email" />
+        <button class="btn-cta-final" onclick="startTrial()">Empezar gratis →</button>
+      </div>
+      <p class="cta-disclaimer">Al registrarte aceptas nuestros <a href="#" style="color:rgba(255,255,255,0.75);">Términos</a> y <a href="#" style="color:rgba(255,255,255,0.75);">Privacidad</a>.</p>
+      <p class="cta-or">— o —</p>
+      <a href="#" onclick="event.preventDefault(); openContactModal('demo');" class="cta-demo-link">Prefiero ver un demo con un especialista →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact Modal ──────────────────────────────────── -->
+<div class="modal-overlay" id="contactModal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+  <div class="modal">
+    <div class="modal-header">
+      <button type="button" class="modal-close" onclick="closeContactModal()" aria-label="Cerrar">✕</button>
+      <h3 id="contactModalTitle">Agenda un demo de MaIA</h3>
+      <p id="contactModalSubtitle">Cuéntanos sobre ti y un especialista te contactará en menos de 24 horas.</p>
+    </div>
+    <div class="modal-body">
+      <form id="contactForm" novalidate>
+        <input type="hidden" id="contact-tipo" name="tipo" value="demo" />
+        <div class="form-row two-col">
+          <div>
+            <label class="form-label" for="contact-nombre">Nombre <span class="req">*</span></label>
+            <input class="form-input" type="text" id="contact-nombre" name="nombre" autocomplete="name" required />
+          </div>
+          <div>
+            <label class="form-label" for="contact-empresa">Empresa</label>
+            <input class="form-input" type="text" id="contact-empresa" name="empresa" autocomplete="organization" />
+          </div>
+        </div>
+        <div class="form-row two-col">
+          <div>
+            <label class="form-label" for="contact-email">Email corporativo <span class="req">*</span></label>
+            <input class="form-input" type="email" id="contact-email" name="email" autocomplete="email" required />
+          </div>
+          <div>
+            <label class="form-label" for="contact-telefono">Teléfono</label>
+            <input class="form-input" type="tel" id="contact-telefono" name="telefono" autocomplete="tel" />
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="contact-mensaje">¿Qué quieres resolver con MaIA?</label>
+          <textarea class="form-textarea" id="contact-mensaje" name="mensaje" rows="3" placeholder="Ej: Automatizar atención de soporte y calificación de leads"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary form-submit" id="contactSubmit">Enviar solicitud →</button>
+        <div class="form-status" id="contactStatus" role="status" aria-live="polite"></div>
+        <p class="form-note">Al enviar aceptas nuestros Términos y Política de Privacidad.</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ─────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="text-decoration:none;">
+          <img src="docs/images/logo-maia.svg" alt="MaIA" style="height:28px;display:block;" />
+        </a>
+        <p>Agentes de IA para equipos de Latinoamérica. Sin código, sin fricción, con resultados desde el primer día.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Producto</h4>
+        <ul>
+          <li><a href="#features">Funciones</a></li>
+          <li><a href="#integrations">Integraciones</a></li>
+          <li><a href="#pricing">Precios</a></li>
+          <li><a href="#">Changelog</a></li>
+          <li><a href="#">Roadmap</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="#">Sobre nosotros</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Casos de éxito</a></li>
+          <li><a href="#">Partners</a></li>
+          <li><a href="#">Trabaja con nosotros</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Soporte</h4>
+        <ul>
+          <li><a href="#">Documentación</a></li>
+          <li><a href="#">Centro de ayuda</a></li>
+          <li><a href="#">Status</a></li>
+          <li><a href="mailto:maia@maiabuilder.ai">maia@maiabuilder.ai</a></li>
+          <li><a href="#cta-final">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 MaIA · Ximple Solutions. Todos los derechos reservados.</span>
+      <div class="footer-socials">
+        <a href="https://linkedin.com" target="_blank" class="footer-social" aria-label="LinkedIn">in</a>
+        <a href="https://instagram.com" target="_blank" class="footer-social" aria-label="Instagram">IG</a>
+        <a href="https://wa.me/message/maiabuilder" target="_blank" class="footer-social" aria-label="WhatsApp">WA</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+<a href="https://wa.me/message/maiabuilder" target="_blank" class="wa-float" aria-label="Chat por WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script>
+  /* ── Navbar scroll ─────────────────────────────────── */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 30);
+  }, { passive: true });
+
+  /* ── Mobile Menu ───────────────────────────────────── */
+  function openMenu()  { document.getElementById('mobileMenu').classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeMenu() { document.getElementById('mobileMenu').classList.remove('open'); document.body.style.overflow=''; }
+
+  /* ── Intersection Observer ─────────────────────────── */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* ── FAQ ───────────────────────────────────────────── */
+  function toggleFaq(item) {
+    document.querySelectorAll('.faq-item.open').forEach(i => { if (i !== item) i.classList.remove('open'); });
+    item.classList.toggle('open');
+  }
+
+  /* ── Billing toggle ────────────────────────────────── */
+  let isAnnual = true;
+  function toggleBilling() {
+    isAnnual = !isAnnual;
+    const t = document.getElementById('billingToggle');
+    t.classList.toggle('on', isAnnual);
+    document.querySelectorAll('.price-num').forEach(el => {
+      el.textContent = parseInt(isAnnual ? el.dataset.annual : el.dataset.monthly).toLocaleString();
+    });
+    document.getElementById('save-starter').textContent = isAnnual ? 'Ahorras $720/año' : ' ';
+    document.getElementById('save-team').textContent    = isAnnual ? 'Ahorras $1,680/año' : ' ';
+    document.getElementById('save-growth').textContent  = isAnnual ? 'Ahorras $3,600/año' : ' ';
+  }
+
+  /* ── ROI Calculator ────────────────────────────────── */
+  function calcROI() {
+    const agents     = parseInt(document.getElementById('agents').value);
+    const salary     = parseInt(document.getElementById('salary').value);
+    const repetitive = parseInt(document.getElementById('repetitive').value);
+
+    document.getElementById('agents-val').textContent = agents + ' agentes';
+    document.getElementById('salary-val').textContent = '$' + salary.toLocaleString();
+    document.getElementById('rep-val').textContent    = repetitive + '%';
+
+    const manualCost = agents * salary * (repetitive / 100);
+    const saving     = Math.round(manualCost * 0.75);
+    let planCost = agents <= 5 ? 299 : agents <= 20 ? 699 : 1499;
+    if (isAnnual) planCost = Math.round(planCost * 0.8);
+    const net = Math.max(0, saving - planCost);
+    const roi = ((net / planCost) + 1).toFixed(1);
+
+    document.getElementById('roi-num').textContent  = '$' + saving.toLocaleString();
+    document.getElementById('roi-sub').textContent  = '$' + (saving * 12).toLocaleString() + ' al año — ROI ' + roi + '×';
+    document.getElementById('roi-cost').textContent = '$' + manualCost.toLocaleString() + '/mo';
+    document.getElementById('roi-plan').textContent = '$' + planCost.toLocaleString() + '/mo';
+    document.getElementById('roi-net').textContent  = '$' + net.toLocaleString() + '/mo';
+  }
+  calcROI();
+
+  /* ── Backend API ───────────────────────────────────── */
+  const API_CONTACT_URL = (window.MAIA_API_BASE || '') + '/api/contact';
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  async function postLead(payload) {
+    const res = await fetch(API_CONTACT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    let data = null;
+    try { data = await res.json(); } catch (_) {}
+    return { ok: res.ok, status: res.status, data };
+  }
+
+  /* ── Quick email submit (ROI + CTA final) ──────────── */
+  async function sendROI() {
+    const input = document.getElementById('roi-email');
+    const email = (input.value || '').trim();
+    const btn = event.target;
+    if (!EMAIL_RE.test(email)) { input.focus(); input.style.boxShadow = '0 0 0 3px rgba(220,38,38,0.25)'; setTimeout(()=>input.style.boxShadow='', 1500); return; }
+    const original = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Enviando…';
+    const { ok } = await postLead({ email, tipo: 'email', mensaje: 'Solicita análisis ROI detallado' });
+    if (ok) {
+      btn.textContent = '✓ Enviado';
+      btn.style.background = '#16A34A';
+      setTimeout(() => { btn.textContent = original; btn.style.background = ''; btn.disabled = false; }, 3000);
+    } else {
+      btn.textContent = 'Reintentar →';
+      btn.disabled = false;
+    }
+  }
+
+  async function startTrial() {
+    const inp = document.getElementById('cta-email');
+    const email = (inp.value || '').trim();
+    const btn = event.target;
+    if (!EMAIL_RE.test(email)) {
+      inp.style.background = 'rgba(255,255,255,0.1)';
+      inp.focus();
+      setTimeout(() => { inp.style.background = ''; }, 1500);
+      return;
+    }
+    const original = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Enviando…';
+    const { ok } = await postLead({ email, tipo: 'email', mensaje: 'Empezar gratis desde CTA final' });
+    if (ok) {
+      btn.textContent = '✓ ¡Listo! Revisa tu email';
+      btn.style.background = '#fff';
+      btn.style.color = '#16A34A';
+    } else {
+      btn.textContent = original;
+      btn.disabled = false;
+    }
+  }
+
+  /* ── Contact Modal ─────────────────────────────────── */
+  const contactModal  = document.getElementById('contactModal');
+  const contactForm   = document.getElementById('contactForm');
+  const contactStatus = document.getElementById('contactStatus');
+  const contactSubmit = document.getElementById('contactSubmit');
+
+  function openContactModal(tipo = 'demo') {
+    document.getElementById('contact-tipo').value = tipo;
+    const title = document.getElementById('contactModalTitle');
+    const sub   = document.getElementById('contactModalSubtitle');
+    if (tipo === 'contacto') {
+      title.textContent = 'Hablemos con ventas';
+      sub.textContent   = 'Cuéntanos qué necesitas y te contactamos en menos de 24 horas.';
+    } else {
+      title.textContent = 'Agenda un demo de MaIA';
+      sub.textContent   = 'Cuéntanos sobre ti y un especialista te contactará en menos de 24 horas.';
+    }
+    contactStatus.classList.remove('show', 'success', 'error');
+    contactSubmit.disabled = false;
+    contactSubmit.textContent = 'Enviar solicitud →';
+    contactModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('contact-nombre').focus(), 50);
+  }
+
+  function closeContactModal() {
+    contactModal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  contactModal.addEventListener('click', e => {
+    if (e.target === contactModal) closeContactModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && contactModal.classList.contains('open')) closeContactModal();
+  });
+
+  contactForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const fd = new FormData(contactForm);
+    const payload = Object.fromEntries(fd.entries());
+
+    document.querySelectorAll('#contactForm .invalid').forEach(el => el.classList.remove('invalid'));
+    let invalid = false;
+    if (!payload.nombre || !payload.nombre.trim()) {
+      document.getElementById('contact-nombre').classList.add('invalid'); invalid = true;
+    }
+    if (!EMAIL_RE.test((payload.email || '').trim())) {
+      document.getElementById('contact-email').classList.add('invalid'); invalid = true;
+    }
+    if (invalid) {
+      contactStatus.textContent = 'Revisa los campos resaltados.';
+      contactStatus.classList.add('show', 'error');
+      return;
+    }
+
+    contactSubmit.disabled = true;
+    contactSubmit.textContent = 'Enviando…';
+    contactStatus.classList.remove('show', 'success', 'error');
+
+    const { ok, status, data } = await postLead(payload);
+    if (ok) {
+      contactStatus.textContent = '¡Gracias! Te contactaremos en menos de 24 horas.';
+      contactStatus.classList.add('show', 'success');
+      contactForm.reset();
+      contactSubmit.textContent = '✓ Enviado';
+      setTimeout(closeContactModal, 2200);
+    } else {
+      contactStatus.textContent = (data && data.error) ? data.error : 'No pudimos enviar tu solicitud. Inténtalo de nuevo en unos segundos.';
+      contactStatus.classList.add('show', 'error');
+      contactSubmit.disabled = false;
+      contactSubmit.textContent = 'Reintentar →';
+    }
+  });
+
+  /* ── Stats counter ─────────────────────────────────── */
+  function counter(el, target, suffix, dec=0) {
+    const dur = 1600;
+    const t0 = performance.now();
+    const run = now => {
+      const p = Math.min((now - t0) / dur, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      const v = target * e;
+      el.textContent = (dec ? v.toFixed(dec) : Math.floor(v).toLocaleString()) + suffix;
+      if (p < 1) requestAnimationFrame(run);
+    };
+    requestAnimationFrame(run);
+  }
+
+  const statsIo = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        counter(document.getElementById('stat-teams'), 500, '+');
+        counter(document.getElementById('stat-int'),   4.2, 'M', 1);
+        counter(document.getElementById('stat-red'),   68,  '%');
+        counter(document.getElementById('stat-roi'),   3.1, '×', 1);
+        statsIo.disconnect();
+      }
+    });
+  }, { threshold: 0.5 });
+  const sr = document.querySelector('.stats-row');
+  if (sr) statsIo.observe(sr);
+</script>
+</body>
+</html>

@@ -1,0 +1,420 @@
+{
+    "project": "MaIA Landing Page",
+    "version": "0.0.1",
+    "description": "Landing Page para MaIA",
+    "rules": {
+        "one_feature_at_a_time": true,
+        "require_all_tests_passing": true,
+        "require_review_before_done": true,
+        "require_test_to_close": true,
+        "valid_status": [
+            "todo",
+            "doing",
+            "done",
+            "blocked"
+        ]
+    },
+    "features": [
+        {
+            "id": 1,
+            "phase": 1,
+            "name": "Revisión de landing page",
+            "description": "Revisar la landing page y actualizar el archivo docs/architecture.md con los cambios que veas necesarios.",
+            "acceptance": [
+                "docs/architecture.md actualizado",
+                "memory.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": "2026-05-22T11:10:27.707Z"
+        },
+        {
+            "id": 2,
+            "phase": 1,
+            "name": "Creación de features",
+            "description": "Crea los features entregados por el usuario",
+            "acceptance": [
+                "features creados",
+                "memory.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": "2026-05-26T15:20:00.000Z"
+        },
+        {
+            "id": 3,
+            "phase": 1,
+            "name": "Creación de formulario de contacto",
+            "description": "Los usuarios van a querer agendar un demo, para ello debemos ofrecer un formulario de contacto para agendar un demo",
+            "acceptance": [
+                "formulario visible y funcional",
+                "boton de contacto funcionando",
+                "envío de correo con los datos del formulario funcionando",
+                "registro en base de datos de los datos del usuario funcionando",
+                "memory.md actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": ""
+        },
+        {
+            "id": 4,
+            "phase": 1,
+            "name": "Actualización de motor de BBDD",
+            "description": "Se actualizó el motor de BBDD de SQLite a PostgreSQL y la base de datos se mueve a un entorno externo",
+            "acceptance": [
+                "motor de BBDD actualizado",
+                "registro de datos de formulario en bd funcionando",
+                "envio de correo con los datos del formulario funcionando",
+                "memory.md actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": ""
+        },
+        {
+            "id": 5,
+            "phase": 1,
+            "name": "integración de sendgrip para envío de correos",
+            "description": "Implementar sendgrip para envío de correos luego de agendar un demo. No usar SMTP, usar sendgrip.",
+            "acceptance": [
+                "envio de correo con los datos del formulario funcionando usando sendgrip",
+                "memory.md actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": "2026-05-26T18:30:00.000Z"
+        },
+        {
+            "id": 6,
+            "phase": 1,
+            "name": "Migración del proyecto a Vite + React + TypeScript",
+            "description": "Migración del proyecto a Vite + React + TypeScript (con Material UI)",
+            "acceptance": [
+                "Vite instalado",
+                "React instalado",
+                "TypeScript instalado",
+                "memory.md actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": "2026-05-26T19:00:00.000Z"
+        },
+        {
+            "id": 7,
+            "phase": 1,
+            "name": "Visualización de Blog",
+            "description": "Se debe realizar la creación de una sección en la landing que direccione a una página que liste los artículos del blog.",
+            "acceptance": [
+                "creación de formulario de sesión",
+                "creación de interfaz de gestión de blog",
+                "creación de mantenedor de usuarios",
+                "creación de blog",
+                "creación de sección de blog",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": "2026-05-27T10:25:00.000Z"
+        },
+        {
+            "id": 8,
+            "phase": 1,
+            "name": "Migrar de SendGrid a Nodemailer",
+            "description": "Migrar de SendGrid a Nodemailer para el envío de correos",
+            "acceptance": [
+                "Nodemailer instalado",
+                "envio de correo con los datos del formulario funcionando usando Nodemailer",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": "2026-05-26T19:30:00.000Z"
+        },
+        {
+            "id": 9,
+            "phase": 1,
+            "name": "Integrar con Hubspot",
+            "description": "Integrar Hubspot en el backend para llevar control de los leads que llegan",
+            "acceptance": [
+                "Hubspot instalado",
+                "Registro de lead en hubspot funciona",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "blocked",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": ""
+        },
+        {
+            "id": 10,
+            "phase": 1,
+            "name": "Dar formato al correo de notificación de demos",
+            "description": "Dar formato al correo de notificación para que sea mas amigable, con el objetivo de que tenga un header con el logo de MaIA y un footer con el logo de MaIA, el correo debe llegar al usuario y a ventas. El formato del correo debe ser en html. El formato va a estar en docs/images/",
+            "acceptance": [
+                "correo de notificación con header y footer funcionando",
+                "correo enviado a ventas",
+                "correo enviado al usuario",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": "2026-05-27T04:00:00.000Z"
+        },
+        {
+            "id": 11,
+            "phase": 1,
+            "name": "Actualización de campos modal de agendamiento",
+            "description": "Actualizar campos del modal de agendamiento para incluir: empresa, tipo de industria, agregar al campo de telefono el indicador de país según el prefijo del número, comentarios.",
+            "acceptance": [
+                "Actualización de campos modal de agendamiento",
+                "validación de campos funcionando",
+                "registro de datos en base de datos funciona",
+                "envío de correo funciona",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": "2026-05-26T22:40:00.000Z"
+        },
+        {
+            "id": 12,
+            "phase": 1,
+            "name": "Actualización de campos modal de agendamiento backend",
+            "description": "El campo número de teléfono identifica al país según el prefijo del número, en base de datos se debe guardar también el país en formato texto.",
+            "acceptance": [
+                "Actualización de campos en la tabla leads",
+                "memory.md actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": "2026-05-26T23:10:00.000Z"
+        },
+        {
+            "id": 13,
+            "phase": 1,
+            "name": "Mantenedor de Blog",
+            "description": "Se debe realizar un mantenedor para la gestión de artículos del blog, en la sección de administración.",
+            "acceptance": [
+                "creación de interfaz de gestión de blog",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": "2026-05-27T09:55:00.000Z"
+        },
+        {
+            "id": 14,
+            "phase": 1,
+            "name": "Creación de interfaz de administración",
+            "description": "Los usuarios deben poder iniciar sesión para acceder a la interfaz de administración.",
+            "acceptance": [
+                "login de usuarios funcionando",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": "2026-05-27T04:00:00.000Z"
+        },
+        {
+            "id": 15,
+            "phase": 1,
+            "name": "Creación de roles",
+            "description": "Crear roles de usuarios administrador y editor.",
+            "acceptance": [
+                "roles de usuarios creados",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": "2026-05-27T04:00:00.000Z"
+        },
+        {
+            "id": 16,
+            "phase": 1,
+            "name": "Visualización de leads",
+            "description": "Dentro de la sección de administración se debe visualizar los leads obtenidos a partir del formulario de contacto.",
+            "acceptance": [
+                "visualización de leads funcionando",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": "2026-05-27T09:55:00.000Z"
+        },
+        {
+            "id": 17,
+            "phase": 1,
+            "name": "Probar cambio de configuración para envío de correo",
+            "description": "Se cambiaron las credenciales para envíar correos usando gmail, se debe validar que el correo llegue correctamente y que se almacenen los datos en la base de datos.",
+            "acceptance": [
+                "correo enviado correctamente",
+                "datos almacenados en base de datos correctamente",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-26T00:00:00.000Z",
+            "updated_at": "2026-05-28T09:20:00.000Z"
+        },
+        {
+            "id": 18,
+            "phase": 1,
+            "name": "Agregar formato enriquecido a la creación de post para el blog",
+            "description": "Agregar formato enriquecido a la creación de post para el blog, se debe poder agregar imágenes, videos, tablas, etc. Se debe poder ver el post en el blog con el formato enriquecido.",
+            "acceptance": [
+                "Agregar formato enriquecido a la creación de post para el blog",
+                "Los post deben visualizarse con el formato enriquecido",
+                "memoria actualizado",
+                "docs/architecture.md actualizado",
+                "9/9 tests del frontend en verde"
+            ],
+            "status": "done",
+            "created_at": "2026-05-28T00:00:00.000Z",
+            "updated_at": "2026-05-29T03:05:00.000Z"
+        },
+        {
+            "id": 19,
+            "phase": 1,
+            "name": "Permitir eliminar un post desde Admin",
+            "description": "Permitir eliminar un post desde la interfaz de administración.",
+            "acceptance": [
+                "Permitir eliminar un post desde la interfaz de administración",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-28T00:00:00.000Z",
+            "updated_at": "2026-05-29T03:00:00.000Z"
+        },
+        {
+            "id": 20,
+            "phase": 1,
+            "name": "Agregar imagenes que identifique el servicio de Maia",
+            "description": "Agregar imagenes que identifique el servicio de Maia en cada una de las secciones",
+            "acceptance": [
+                "Agregar imagenes que identifique el servicio de Maia en cada una de las secciones en la ruta docs/images para ver primero antes de implementar",
+                "memoria actualizado",
+                "docs/architecture.md actualizado",
+                "docs/images/ actualizado"
+            ],
+            "status": "pending",
+            "created_at": "2026-05-28T00:00:00.000Z",
+            "updated_at": "2026-05-28T16:02:00.000Z"
+        },
+        {
+            "id": 21,
+            "phase": 1,
+            "name": "Crear formulario para visualizar casos de exito",
+            "description": "Crear formulario para visualizar casos de exito en el sitio web. Este modal tendra los mismos campos del modal de contacto. Este formulario se encontrara en la sección de casos de exito. Cada caso tendra un CTA para abrir el modal.",
+            "acceptance": [
+                "Crear formulario para visualizar casos de exito",
+                "El botón del modal sera Descargar, y se descargara un pdf que se encuentra en la carpeta docs/casos_exito",
+                "Los datos del formulario se deben guardar en la tabla leads",
+                "no se debe modificar el texto de los card actuales, solo agregar un enlace para abrir el modal",
+                "En la sección de casos de exito deben aparecer todos los casos que estan guardados en la tabla leads",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "pending",
+            "created_at": "2026-05-28T00:00:00.000Z",
+            "updated_at": "2026-05-28T16:02:00.000Z"
+        },
+        {
+            "id": 22,
+            "phase": 1,
+            "name": "Agregar una sección de edición en el panel admin",
+            "description": "Agregar una sección de edición en el panel admin para editar el contenido de la landing",
+            "acceptance": [
+                "Agregar una sección de edición en el panel admin para editar el contenido de la landing",
+                "se deben poder subir los pdf de los casos de exito",
+                "Se debe poder ver la cantidad de descargas de cada pdf",
+                "Se debe poder modificar los precios de los planes",
+                "Se debe poder modificar los textos de la landing",
+                "Se debe poder modificar las imagenes de la landing",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "pending",
+            "created_at": "2026-05-28T00:00:00.000Z",
+            "updated_at": "2026-05-28T16:02:00.000Z"
+        },
+        {
+            "id": 23,
+            "phase": 1,
+            "name": "Cambiar el estilo de las cards de las secciones",
+            "description": "Cambiar el estilo de las cards de las secciones para que se vean más llamativas, de modo que se resalte el contenido de cada card.",
+            "acceptance": [
+                "cambiar los iconos de cada card por iconos mas representativos, menos emoticon",
+                "Cambiar el estilo de las cards de las secciones",
+                "Se deben ver mas llamativas",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-28T00:00:00.000Z",
+            "updated_at": "2026-06-04T18:35:00.000Z"
+        },
+        {
+            "id": 24,
+            "phase": 1,
+            "name": "Agrega un fondo animado al hero utilizando la libreria vast.js",
+            "description": "Agrega un fondo animado al hero utilizando la libreria vast.js, para agregar este efecto debes entrar al sitio web vast.js y seguir los pasos para agregar el efecto al hero. No debes modificar el contenido del hero, solo agregar el efecto de fondo.",
+            "acceptance": [
+                "Agrega un fondo animado al hero utilizando la libreria vast.js",
+                "No debes modificar el contenido del hero",
+                "el efecto a utilizar es el llamado NET dentro de vast.js",
+                "manten la paleta de colores, fondo --orange-xxl para el background y --orange para el color",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-28T00:00:00.000Z",
+            "updated_at": "2026-06-04T19:05:00.000Z"
+        },
+        {
+            "id": 25,
+            "phase": 1,
+            "name": "Agrega un gradiente circular en la secciones El Problema, La Solución, Funciones, Integraciones, Precios, Casos de exito y Preguntas frecuentes",
+            "description": "Agrega un gradiente vertical en cada una de las secciones. No debes modificar el contenido de cada sección, solo agregar el efecto de gradiente.",
+            "acceptance": [
+                "Agrega un gradiente vertical en cada una de las secciones",
+                "No debes modificar el contenido de cada sección",
+                "utiliza la paleta asociada al color vigente de la sección",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-28T00:00:00.000Z",
+            "updated_at": "2026-06-04T19:25:00.000Z"
+        },
+        {
+            "id": 26,
+            "phase": 1,
+            "name": "Mejora la presentación de las empresas que ya automatizan con MaIA",
+            "description": "Mejora la presentación de las empresas que ya automatizan con MaIA, para que se vean más llamativas y atractivas. Los logos de cada empresa estan en la carpeta public",
+            "acceptance": [
+                "Mejora la presentación de las empresas que ya automatizan con MaIA",
+                "se deben poder ingresar los logos de las empresas que ya automatizan con MaIA",
+                "memoria actualizado",
+                "docs/architecture.md actualizado"
+            ],
+            "status": "done",
+            "created_at": "2026-05-28T00:00:00.000Z",
+            "updated_at": "2026-06-04T19:44:00.000Z"
+        }
+    ]
+}
