@@ -1064,3 +1064,40 @@ El usuario había editado el archivo previamente, removiendo el input email y el
 - `feature_list.json` — id=26 → `done`.
 - `docs/architecture.md` — historial actualizado.
 - `memory.md` — esta entrada.
+
+---
+
+## 2026-06-04 — Feature id=27: Build de producción
+
+**Tarea ejecutada:** Build del frontend para despliegue en producción.
+
+**Fix previo al build:** El componente `CTAFinal.tsx` tenía el prop `onOpenContact` declarado en la interfaz pero sin uso dentro del JSX (el botón "Iniciar ahora" ya apunta directamente a `https://app.maiabuilder.ai/`). El error `TS6133` bloqueaba el `tsc -b`. Se eliminó el prop del componente y del punto de llamada en `App.tsx`.
+
+**Resultado del build (`npm run build` en `/client`):**
+
+| Artefacto | Tamaño | Gzip |
+|-----------|--------|------|
+| `dist/index.html` | 0.95 kB | 0.53 kB |
+| `dist/assets/index-*.css` | 35.12 kB | 6.52 kB |
+| `dist/assets/vanta.net.min-*.js` | 13.56 kB | 4.69 kB |
+| `dist/assets/index-*.js` | 2,472 kB | 762 kB |
+
+- Vanta NET ya está code-split (dynamic import) → chunk separado de 13 kB.
+- El bundle JS principal de 762 kB gzip incluye MUI v6, react-markdown + remark-gfm, @uiw/react-md-editor, three.js y demás deps.
+- El `.map` de source-maps está disponible para debugging en producción.
+- Todos los assets públicos (logos PNG, SVGs) copiados correctamente a `dist/`.
+
+**Pasos ejecutados:**
+1. `npx tsc --noEmit` — detectó error TS6133 en CTAFinal.tsx.
+2. Fix: eliminado `onOpenContact` de CTAFinal + App.tsx.
+3. `npx tsc --noEmit` — 0 errores.
+4. `npm test -- --run` → 34/34 verdes (sin regresiones).
+5. `npm run build` → `✓ built in 19.77s`.
+
+**Archivos modificados:**
+- `client/src/components/sections/CTAFinal.tsx` — prop `onOpenContact` eliminado.
+- `client/src/App.tsx` — prop eliminado del uso de `<CTAFinal />`.
+- `client/dist/` — artefactos de producción generados.
+- `feature_list.json` — id=27 → `done`.
+- `docs/architecture.md` — historial actualizado.
+- `memory.md` — esta entrada.

@@ -1,8 +1,6 @@
 import { Box, Container, Typography, Chip, Button } from '@mui/material';
 
-interface CTAFinalProps { onOpenContact: () => void }
-
-export default function CTAFinal({ onOpenContact }: CTAFinalProps) {
+export default function CTAFinal() {
   return (
     <Box component="section" id="cta-final" sx={{ py: { xs: 7, md: 10 } }}>
       <Container>

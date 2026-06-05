@@ -1,6 +1,6 @@
 # Arquitectura — MaIA Landing Page
 
-> Última actualización: 2026-06-04 (feature id=26)
+> Última actualización: 2026-06-04 (feature id=27)
 
 ---
 

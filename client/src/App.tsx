@@ -44,7 +44,7 @@ export default function App() {
       <Testimonials />
       {/*<Blog />*/}
       <FAQ />
-      <CTAFinal onOpenContact={() => openContact('demo')} />
+      <CTAFinal />
       <Footer />
       <WhatsAppFloat />
       <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} tipo={contactTipo} />
