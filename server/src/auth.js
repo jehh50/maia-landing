@@ -23,7 +23,8 @@ function resolveSecret(explicit) {
 function cookieOptions({ secure } = {}) {
   return {
     httpOnly: true,
-    sameSite: 'lax',
+    // cross-origin (Vercel → Render): SameSite=none requiere Secure=true
+    sameSite: secure ? 'none' : 'lax',
     secure: Boolean(secure),
     path: '/',
     maxAge: COOKIE_MAX_AGE_MS,

@@ -29,7 +29,10 @@ export function createApp(options = {}) {
   app.use(express.json({ limit: '32kb' }));
   app.use(express.urlencoded({ extended: false, limit: '32kb' }));
   app.use(cookieParser());
-  app.use(cors({ origin: corsOrigin === '*' ? true : corsOrigin.split(',') }));
+  app.use(cors({
+    origin: corsOrigin === '*' ? true : corsOrigin.split(','),
+    credentials: true,
+  }));
 
   // --- Auth (feature 14) ---
   const auth = options.auth ?? createAuthRouter({ pool, schema, secret: options.authSecret });
